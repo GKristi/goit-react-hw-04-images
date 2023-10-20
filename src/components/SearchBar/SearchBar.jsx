@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import {
     SearchBarHeader,
     SearchButton,
@@ -6,38 +6,33 @@ import {
     SearchInput,
 } from './SearchBar.styled';
 
-class Searchbar extends Component {
-    state = {
-        value: '',
-    };
+const Searchbar = ({ onSubmit }) => {
+    const [value, setValue] = useState('');
 
-    addInputData = e => {
+    const addInputData = e => {
         e.preventDefault();
-        if (this.state.value.length < 1) return;
-        this.props.onSubmit(this.state.value.toLowerCase().trim());
+        onSubmit(value.toLowerCase().trim());
     };
 
-    getInputData = ({ target: { value } }) => {
-        this.setState({ value });
+    const getInputData = ({ target: { value } }) => {
+        setValue(value);
     };
 
-    render() {
-        return (
-            <SearchBarHeader>
-                <SearchForm onSubmit={this.addInputData}>
-                    <SearchButton type="submit"></SearchButton>
-                    <SearchInput
-                        name="searchQuery"
-                        type="text"
-                        autoComplete="off"
-                        autoFocus
-                        placeholder="Search images and photos"
-                        onChange={this.getInputData}
-                    />
-                </SearchForm>
-            </SearchBarHeader>
-        );
-    }
-}
+    return (
+        <SearchBarHeader>
+            <SearchForm onSubmit={addInputData}>
+                <SearchButton type="submit"></SearchButton>
+                <SearchInput
+                    name="searchQuery"
+                    type="text"
+                    autoComplete="off"
+                    autoFocus
+                    placeholder="Search images and photos"
+                    onChange={getInputData}
+                />
+            </SearchForm>
+        </SearchBarHeader>
+    );
+};
 
 export default Searchbar;
